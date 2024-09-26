@@ -21,7 +21,7 @@ abstract class NovelDatabase : RoomDatabase() {
                     context.applicationContext,
                     NovelDatabase::class.java,
                     "novel_database"
-                ).fallbackToDestructiveMigration().build()
+                ).build()
                 INSTANCE = instance
                 instance
             }
