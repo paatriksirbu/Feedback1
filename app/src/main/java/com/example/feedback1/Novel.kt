@@ -8,6 +8,9 @@ data class Novel(
     val title: String,
     val author: String,
     val year: Int,
-    val synopsis: String,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
-)
+    val synopsis: String
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+
+}
