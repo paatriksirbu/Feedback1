@@ -7,15 +7,28 @@ import java.util.concurrent.Executors
 
 class NovelRepository (application: Application) {
     private val novelDao: NovelDAO
-    private val allNovels: LiveData<List<Novel>>
     private val executorService : ExecutorService = Executors.newFixedThreadPool(2)
 
 
     init {
         val database = NovelDatabase.getInstance(application)
         novelDao = database.novelDao()
-        allNovels = novelDao.getAllNovels()
     }
 
+    fun insert(novel: Novel) {
+        executorService.execute {
+            novelDao.insert(novel)
+        }
+    }
+
+    fun delete(novel: Novel){
+        executorService.execute{
+            novelDao.delete(novel)
+        }
+    }
+
+    fun getAllNovels(): LiveData<List<Novel>> {
+        return novelDao.getAllNovels()
+    }
 
 }
