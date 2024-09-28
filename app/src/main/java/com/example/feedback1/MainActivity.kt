@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.feedback1.databinding.PopupAgregarNovelaBinding
 import com.example.feedback1.databinding.PopupEliminarNovelaBinding
+import com.example.feedback1.databinding.PopupVerNovelasBinding
 import java.util.Calendar
 
 
@@ -59,6 +60,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonReviews.setOnClickListener{
             mostrarPopupReviews()
+        }
+
+        buttonVerNovelas.setOnClickListener{
+            mostrarPopupVerNovelas()
         }
 
     }
@@ -147,6 +152,22 @@ class MainActivity : AppCompatActivity() {
             }
             .setNegativeButton("Cancelar", null)
             .create()
+
+        dialog.show()
+    }
+
+    private fun mostrarPopupVerNovelas() {
+        val binding = PopupVerNovelasBinding.inflate(layoutInflater)
+
+        binding.listViewPopupNovelas.adapter = novelAdapter
+
+        val dialog = AlertDialog.Builder(this).apply {
+            setView(binding.root)
+            setTitle("Lista de Novelas")
+            setPositiveButton("Cerrar") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.create()
 
         dialog.show()
     }
