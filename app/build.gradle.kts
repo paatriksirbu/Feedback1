@@ -57,6 +57,7 @@ dependencies {
 
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.ui.test.junit4.android)
     kapt(libs.androidx.room.compiler)
 
     implementation(libs.firebase.firestore.ktx)

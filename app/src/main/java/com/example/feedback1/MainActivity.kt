@@ -11,6 +11,7 @@ import android.widget.Toast
 import android.widget.PopupWindow
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.add
@@ -18,6 +19,7 @@ import androidx.compose.ui.semantics.text
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.feedback1.databinding.PopupAgregarNovelaBinding
+import com.example.feedback1.databinding.PopupEliminarNovelaBinding
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,11 +49,14 @@ class MainActivity : AppCompatActivity() {
            mostrarPopupAgregarNovela()
        }
 
+        buttonEliminarNovela.setOnClickListener{
+            mostrarPopupEliminarNovela()
+        }
+
     }
 
     private fun mostrarPopupAgregarNovela() {
         val binding = PopupAgregarNovelaBinding.inflate(layoutInflater)
-        val novelas: MutableList<Novel> = mutableListOf()
 
         val dialog = AlertDialog.Builder(this).apply {
             setView(binding.root)
@@ -70,6 +75,43 @@ class MainActivity : AppCompatActivity() {
                 }
                 dialog.dismiss()
             }
+            setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+        }.create()
+        dialog.show()
+    }
+
+    private fun mostrarPopupEliminarNovela() {
+        val binding = PopupEliminarNovelaBinding.inflate(layoutInflater)
+
+        //Verificamos si hay novelas en la lista para poder eliminar
+        if (novelas.isEmpty()) {
+            Toast.makeText(this, "No hay novelas para eliminar", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val listaTitulos = novelas.map { it.titulo }.toTypedArray()
+
+        val dialog = AlertDialog.Builder(this).apply {
+            setView(binding.root)
+            setTitle("Eliminar Novela")
+
+            // Configurar el Spinner con los títulos de las novelas
+            binding.spinnerNovelas.adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, listaTitulos)
+
+            setPositiveButton("Eliminar") { dialog, _ ->
+                val selectedIndex = binding.spinnerNovelas.selectedItemPosition
+
+                if (selectedIndex >= 0) {
+                    // Eliminar la novela seleccionada
+                    val novelaSeleccionada = novelas[selectedIndex]
+                    novelas.removeAt(selectedIndex)
+                    novelAdapter.notifyDataSetChanged()
+
+                    Toast.makeText(this@MainActivity, "Novela '${novelaSeleccionada.titulo}' eliminada", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+
             setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
         }.create()
         dialog.show()

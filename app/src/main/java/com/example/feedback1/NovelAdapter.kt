@@ -39,4 +39,5 @@ class NovelAdapter (private var novels: List<Novel>) : BaseAdapter(){
         this.novels = novels
         notifyDataSetChanged()
     }
+
 }
