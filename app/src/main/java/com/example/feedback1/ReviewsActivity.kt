@@ -1,6 +1,8 @@
 package com.example.feedback1
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -32,44 +34,79 @@ class ReviewsActivity : AppCompatActivity() {
         submitButton = findViewById(R.id.submitButton)
         spinnerNovels = findViewById(R.id.spinnerNovels)
 
-        loadNovels()
+        lifecycleScope.launch{
+            loadNovels()
+        }
+
+        val novelId = intent.getIntExtra("novelId", -1)
+        if (novelId == -1) {
+            Toast.makeText(this,"No se pudo obtener el ID de la novela", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
         submitButton.setOnClickListener {
             val rating = ratingBar.rating
             val reviewText = reviewEditText.text.toString()
-            val selectedNovel = spinnerNovels.selectedItem as? Novel
+            val selectedNovelIndex = spinnerNovels.selectedItemPosition
 
-            if (selectedNovel != null) {
+            if (selectedNovelIndex >= 0 && selectedNovelIndex < novels.size) {
+                val selectedNovel = novels[selectedNovelIndex]
                 val review = Review(novelId = selectedNovel.id, rating = rating, description = reviewText)
 
                 lifecycleScope.launch {
-                    database.reviewDao().insert(review)
-                    Toast.makeText(
-                        this@ReviewsActivity,
-                        "Reseña enviada: $rating estrellas\n$reviewText",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    try {
+                        database.reviewDao().insert(review)
 
-                    // Limpiar los campos después de enviar la reseña
-                    ratingBar.rating = 0f
-                    reviewEditText.text.clear()
+                        Toast.makeText(
+                            this@ReviewsActivity,
+                            "Reseña enviada: $rating estrellas\n$reviewText",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        ratingBar.rating = 0f
+                        reviewEditText.text.clear()
+
+                        val intent = Intent(this@ReviewsActivity, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        finish()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@ReviewsActivity, "Error al enviar la reseña: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Log.e("SubmitReview", "Error al enviar la reseña", e)
+                    }
                 }
             } else {
                 Toast.makeText(this, "Por favor, selecciona una novela", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
     private fun loadNovels(){
-        lifecycleScope.launch{
-            novels.clear()
-            novels.addAll(database.novelDao().getAllNovels())
+        lifecycleScope.launch {
+            try {
+                novels.clear()
+                val novelsFromDb = database.novelDao().getAllNovels()
+                Log.d("Cargar novelas","Novelas desde la base de datos: $novelsFromDb")
+                if (novelsFromDb.isNullOrEmpty()) {
+                    Log.e("Cargar novelas", "No hay novelas en la base de datos")
+                    Toast.makeText(this@ReviewsActivity, "No hay novelas disponibles", Toast.LENGTH_SHORT).show()
+                } else {
+                    novels.addAll(novelsFromDb)
+                    Log.d("Cargar novelas", "Novelas cargadas: $novels")
 
-            val titulos = novels.map { it.titulo }.toTypedArray()
-            val adapter = ArrayAdapter(this@ReviewsActivity, android.R.layout.simple_spinner_item, titulos)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerNovels.adapter = adapter
+                    val titulos = novels.map { it.titulo }.toTypedArray()
+                    val adapter = ArrayAdapter(this@ReviewsActivity, android.R.layout.simple_spinner_item, titulos)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerNovels.adapter = adapter
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@ReviewsActivity, "Error al cargar las novelas: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("LoadNovels", "Error al cargar las novelas", e)
+            }
         }
+
     }
 }
 

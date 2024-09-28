@@ -1,5 +1,6 @@
 package com.example.feedback1
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -56,6 +57,10 @@ class MainActivity : AppCompatActivity() {
             mostrarPopupEliminarNovela()
         }
 
+        buttonReviews.setOnClickListener{
+            mostrarPopupReviews()
+        }
+
     }
 
     private fun mostrarPopupAgregarNovela() {
@@ -78,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                         return@setPositiveButton
                     }
 
-                    val nuevaNovela = Novel(titulo, autor, year.toInt())
+                    val nuevaNovela = Novel(titulo = titulo, autor = autor, year = year.toInt())
                     novelas.add(nuevaNovela)
                     novelAdapter.notifyDataSetChanged()
                 } else {
@@ -126,6 +131,23 @@ class MainActivity : AppCompatActivity() {
 
             setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
         }.create()
+        dialog.show()
+    }
+
+    private fun mostrarPopupReviews() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Seleccionar Novela")
+            .setItems(novelas.map { it.titulo }.toTypedArray()) { _, which ->
+                // Obtener el ID de la novela seleccionada
+                val selectedNovel = novelas[which]
+                val intent = Intent(this, ReviewsActivity::class.java).apply {
+                    putExtra("novelId", selectedNovel.id) // Pasamos el ID de la novela
+                }
+                startActivity(intent) // Iniciar la ReviewsActivity
+            }
+            .setNegativeButton("Cancelar", null)
+            .create()
+
         dialog.show()
     }
 }

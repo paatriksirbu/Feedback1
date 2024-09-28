@@ -16,6 +16,6 @@ interface NovelDAO {
    fun delete(novel: Novel)
 
    @Query("SELECT * FROM novels")
-   fun getAllNovels(): List<Novel>
+   suspend fun getAllNovels(): List<Novel>
 
 }

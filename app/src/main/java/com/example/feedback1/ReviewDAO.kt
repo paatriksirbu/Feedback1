@@ -9,6 +9,6 @@ interface ReviewDAO {
     @Insert
     suspend fun insert(review: Review)
 
-    @Query("SELECT * FROM review_table WHERE novelId = :novelId")
+    @Query("SELECT * FROM reviews WHERE novelId = :novelId")
     suspend fun getReviewsForNovel(novelId: Int): List<Review>
 }

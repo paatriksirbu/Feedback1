@@ -2,6 +2,8 @@ package com.example.feedback1
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -16,9 +18,9 @@ class NovelRepository (application: Application) {
     }
 
     fun insert(novel: Novel) {
-        Thread{
+        executorService.execute{
             novelDao.insert(novel)
-        }.start()
+        }
     }
 
     fun delete(novel: Novel){
@@ -27,8 +29,10 @@ class NovelRepository (application: Application) {
         }
     }
 
-    fun getAllNovels(): List<Novel> {
-        return novelDao.getAllNovels()
+    suspend fun getAllNovels(): List<Novel> {
+        return withContext(Dispatchers.IO) {
+            novelDao.getAllNovels()
+        }
     }
 
 }
