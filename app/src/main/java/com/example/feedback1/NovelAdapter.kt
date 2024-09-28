@@ -32,6 +32,8 @@ class NovelAdapter (private var novels: List<Novel>) : BaseAdapter(){
         titleTextView.text = novel.titulo
         authorTextView.text = novel.autor
 
+        titleTextView.text = "${novel.titulo}"
+
         return view
     }
 

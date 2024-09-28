@@ -98,7 +98,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val listaTitulos = novelas.map { it.titulo }.toTypedArray()
+        val listaTitulos = novelas.map { "${it.titulo} (${it.year})" }.toTypedArray()
+
 
         val dialog = AlertDialog.Builder(this).apply {
             setView(binding.root)
