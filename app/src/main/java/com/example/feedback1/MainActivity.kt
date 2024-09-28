@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.feedback1.databinding.PopupAgregarNovelaBinding
 import com.example.feedback1.databinding.PopupEliminarNovelaBinding
+import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity() {
@@ -66,7 +67,15 @@ class MainActivity : AppCompatActivity() {
                 val autor = binding.editTextAutor.text.toString()
                 val year = binding.editTextYear.text.toString()
 
+                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
                 if (titulo.isNotEmpty() && autor.isNotEmpty() && year.isNotEmpty()) {
+
+                    if (year.toInt() > currentYear) {
+                        Toast.makeText(this@MainActivity, "El año de publicación no puede ser mayor al año actual", Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
+
                     val nuevaNovela = Novel(titulo, autor, year.toInt())
                     novelas.add(nuevaNovela)
                     novelAdapter.notifyDataSetChanged()
