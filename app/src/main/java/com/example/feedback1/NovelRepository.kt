@@ -16,9 +16,9 @@ class NovelRepository (application: Application) {
     }
 
     fun insert(novel: Novel) {
-        executorService.execute {
+        Thread{
             novelDao.insert(novel)
-        }
+        }.start()
     }
 
     fun delete(novel: Novel){

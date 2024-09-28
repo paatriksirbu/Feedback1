@@ -3,26 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:background="@android:color/white">
 
-    <!-- Botón para agregar una nueva novela -->
-    <Button
-        android:id="@+id/buttonAddBook"
+    <TextView
+        android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Agregar Novela"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
+        android:text="Gestor de Novelas"
+        android:textSize="24sp"
+        android:textColor="#0D1F2D"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp" />
 
-    <!-- RecyclerView para mostrar la lista de novelas -->
+    <Button
+        android:id="@+id/buttonAgregarNovela"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Agregar Novela"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/teal_200"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/buttonEliminarNovela"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Eliminar Novela"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/teal_200"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonReviews"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Reseñas"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/teal_200"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/buttonVerNovelas"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Ver Novelas"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/teal_200" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listViewNovels"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
-        android:scrollbars="vertical" />
+        android:layout_marginTop="24dp"/>
 
 </LinearLayout>
-

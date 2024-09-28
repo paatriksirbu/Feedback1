@@ -3,12 +3,11 @@ package com.example.feedback1
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "novel_table")
+@Entity(tableName = "novels")
 data class Novel(
-    val title: String,
-    val author: String,
+    val titulo: String,
+    val autor: String,
     val year: Int,
-    val synopsis: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

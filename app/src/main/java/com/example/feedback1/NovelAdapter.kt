@@ -29,8 +29,8 @@ class NovelAdapter (private var novels: List<Novel>) : BaseAdapter(){
 
         val novel = getItem(position)
 
-        titleTextView.text = novel.title
-        authorTextView.text = novel.author
+        titleTextView.text = novel.titulo
+        authorTextView.text = novel.autor
 
         return view
     }
