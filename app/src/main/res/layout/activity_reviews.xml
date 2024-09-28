@@ -34,7 +34,7 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="90dp"
-        android:background="@android:color/holo_orange_dark"
+        android:background="@color/azul_marino"
         android:minHeight="48dp"
         android:text="Enviar Reseña"
         android:textColor="@android:color/white"
