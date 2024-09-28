@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase
 abstract class NovelDatabase : RoomDatabase() {
 
     abstract fun novelDao(): NovelDAO
+    abstract fun reviewDao(): ReviewDAO
 
     companion object {
         @Volatile
