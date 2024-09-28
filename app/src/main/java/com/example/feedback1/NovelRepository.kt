@@ -27,7 +27,7 @@ class NovelRepository (application: Application) {
         }
     }
 
-    fun getAllNovels(): LiveData<List<Novel>> {
+    fun getAllNovels(): List<Novel> {
         return novelDao.getAllNovels()
     }
 

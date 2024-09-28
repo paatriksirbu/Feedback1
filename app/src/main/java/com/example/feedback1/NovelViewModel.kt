@@ -7,12 +7,12 @@ import androidx.lifecycle.LiveData
 class NovelViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository : NovelRepository = NovelRepository(application)
-    private val allNovels : LiveData<List<Novel>> = repository.getAllNovels()
+    private val allNovels : List<Novel> = repository.getAllNovels()
 
     fun insert(novel: Novel) = repository.insert(novel)
 
     fun delete(novel: Novel) = repository.delete(novel)
 
-    fun getAllNovels(): LiveData<List<Novel>> = allNovels
+    fun getAllNovels(): List<Novel> = allNovels
 }
 
